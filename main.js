@@ -1,3 +1,5 @@
+import { readFromJSONFile, writeToJSONFile } from './fileUtility.js';
+
 fetch("https://umass.collegescheduler.com/api/terms/Fall%202023/subjects/COMPSCI/courses", {
   "headers": {
     "accept": "*/*",
@@ -16,4 +18,6 @@ fetch("https://umass.collegescheduler.com/api/terms/Fall%202023/subjects/COMPSCI
   },
   "body": null,
   "method": "GET"
-}).then(response => response.json()).then(data => console.log(data));
+}).then(response => response.json())
+.then(data => writeToJSONFile('data.json', data))
+.then(msg => console.log(msg), err => console.log(`ERROR: ${err}`));
