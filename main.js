@@ -1,5 +1,8 @@
-import { readFromJSONFile, writeToJSONFile } from './fileUtility.js';
+import { readFromJSONFile, writeToJSONFile } from "./fileUtility.js";
+import { fetch_course_data } from "./fetch.js";
 
-readFromJSONFile('data.json').then(data => data.some(course => course.number === '426'))
-.then(open => console.log(open))
-.catch(err => console.log("File read error"));
+readFromJSONFile("subjects.json").then(courses =>
+  Promise.all(courses.map(course => fetch_course_data(course.id))).then(
+    values => writeToJSONFile("data.json", values)
+  )
+);
