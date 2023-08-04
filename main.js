@@ -15,7 +15,33 @@ const get_hash = () => readFromJSONFile("subjects.json").then((courses) => cours
 
 async function is_open(major, number) {
   let major_id = hash[major];
-  return readFromJSONFile('data.json').then(majors => majors[major_id].some(course => course.number == number));
+  return readFromJSONFile('data.json').then(majors => majors[major_id].some(course => course.number === number));
 }
 
-is_open("AEROSPAC", 224).then(result => console.log(result));
+function add_user(id, first_name, last_name) {
+  let user = {first_name: first_name, last_name: last_name, courses: []}
+  readFromJSONFile('users.json').then(users => {
+    // if there is no user data
+    if (!users) { users = {}; }
+
+    users[id] = user;
+    writeToJSONFile('users.json', users);
+  });
+}
+
+async function add_courses(id, ...courses) {
+  return readFromJSONFile('users.json').then(users => {
+    // if there is no user data
+    if (!users) { Promise.reject("No user data available"); }
+
+    // if the user is not found
+    if (!users[id]) { Promise.reject("User ID not valid"); }
+
+    users[id].courses = users[id].courses.concat(courses);
+    writeToJSONFile('users.json', users);
+  });
+}
+
+const get_course = (major, number) => ({major: major, number: number});
+
+add_courses("ihasaan", get_course('COMPSCI', "220")).catch(err => console.log(err));2
