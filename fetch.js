@@ -45,5 +45,13 @@ async function fetch_subjects() {
   }).then(response => response.json());
 }
 
+export async function store_open_courses() {
+  return readFromJSONFile("subjects.json").then((courses) =>
+    Promise.all(courses.map((course) => fetch_course_data(course.id))).then(
+      (values) => writeToJSONFile("data.json", values)
+    )
+  );
+}
+
 // fetch_subjects()
 // .then(data => writeToJSONFile('subjects.json', data));
