@@ -52,13 +52,3 @@ async function add_courses(id, ...courses) {
     return writeToJSONFile('users.json', data);
   });  
 }
-
-let courses = [get_course('PHIL', "180"),
-get_course('COMPSCI', "515"),
-get_course('MATH', "411"),
-get_course('COMPSCI', "326"),
-get_course('COMPSCI', "426"),
-get_course('MUSIC', "150")];
-
-// init_courses(...courses).catch(err => console.log(err));
-add_courses("ihasaan", ...courses);
