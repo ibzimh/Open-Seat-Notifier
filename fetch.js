@@ -2,7 +2,7 @@ import { readFromJSONFile, writeToJSONFile } from './fileUtility.js';
 
 export async function fetch_course_data(id) {
   const url = "https://umass.collegescheduler.com/api/terms/Fall%202023/subjects/" + id + "/courses";
-  return fetch("https://umass.collegescheduler.com/api/terms/Fall%202023/subjects/COMPSCI/courses", {
+  return fetch(url, {
     "headers": {
       "accept": "*/*",
       "accept-language": "en-US,en;q=0.9",
