@@ -1,0 +1,15 @@
+{
+  "ihasaan": {
+    "first_name": "Ibrahim",
+    "last_name": "Hasaan",
+    "courses": [
+      { "major": "PHIL", "number": "180" },
+      { "major": "COMPSCI", "number": "515" },
+      { "major": "MATH", "number": "411" },
+      { "major": "COMPSCI", "number": "326" },
+      { "major": "COMPSCI", "number": "426" },
+      { "major": "MUSIC", "number": "150" }
+    ]
+  },
+  "asingh0": { "first_name": "Aditya", "last_name": "Singh", "courses": [] }
+}

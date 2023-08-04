@@ -46,3 +46,13 @@ async function add_courses(id, ...courses) {
     return writeToJSONFile('users.json', users);
   });
 }
+
+add_courses("ihasaan", 
+  get_course('PHIL', "180"), 
+  get_course('COMPSCI', "515"), 
+  get_course('MATH', "411"), 
+  get_course('COMPSCI', "326"), 
+  get_course('COMPSCI', "426"), 
+  get_course('MUSIC', "150")
+)
+.catch(err => console.log(err));
