@@ -18,6 +18,8 @@ async function is_open(major, number) {
   return readFromJSONFile('data.json').then(majors => majors[major_id].some(course => course.number === number));
 }
 
+const get_course = (major, number) => ({major: major, number: number});
+
 function add_user(id, first_name, last_name) {
   let user = {first_name: first_name, last_name: last_name, courses: []}
   readFromJSONFile('users.json').then(users => {
@@ -25,23 +27,22 @@ function add_user(id, first_name, last_name) {
     if (!users) { users = {}; }
 
     users[id] = user;
-    writeToJSONFile('users.json', users);
+    return writeToJSONFile('users.json', users);
   });
 }
 
 async function add_courses(id, ...courses) {
   return readFromJSONFile('users.json').then(users => {
     // if there is no user data
-    if (!users) { Promise.reject("No user data available"); }
+    if (!users) { return Promise.reject("No user data available"); }
 
     // if the user is not found
-    if (!users[id]) { Promise.reject("User ID not valid"); }
+    if (!users[id]) { 
+      writeToJSONFile('users.json', users);
+      return Promise.reject("User ID not valid");
+    }
 
     users[id].courses = users[id].courses.concat(courses);
-    writeToJSONFile('users.json', users);
+    return writeToJSONFile('users.json', users);
   });
 }
-
-const get_course = (major, number) => ({major: major, number: number});
-
-add_courses("ihasaan", get_course('COMPSCI', "220")).catch(err => console.log(err));2
