@@ -18,31 +18,64 @@ async function is_open(major, number) {
   return readFromJSONFile('data.json').then(majors => majors[major_id].some(course => course.number === number));
 }
 
-const get_course = (major, number) => ({major: major, number: number});
+// function add_user(major, number, id) {
+//   let course_id = major+':'+number;
+//   return readFromJSONFile('users.json').then(data => {
+//     // if there is no course data
+//     if (!data) { return Promise.reject("No active course data available"); }
 
-function add_user(id, first_name, last_name) {
-  let user = {first_name: first_name, last_name: last_name, courses: []}
-  readFromJSONFile('users.json').then(users => {
-    // if there is no user data
-    if (!users) { users = {}; }
+//     // if the course is not found
+//     if (!data[course_id]) { 
+//       writeToJSONFile('users.json', data);
+//       return Promise.reject("Course not found");
+//     }
 
-    users[id] = user;
-    return writeToJSONFile('users.json', users);
+//     data[course_id].push(id);
+//     return writeToJSONFile('users.json', data);
+//   });
+// }
+
+const get_course = (major, number) => ({major: major, number: number, id: []});
+
+async function init_courses(...courses) {
+  return readFromJSONFile('users.json').then(data => {
+    // if there is no course data
+    if (!data) { data = {}; }
+
+    for (let course of courses) {
+      data[course.major + ':' + course.number] = []
+    }
+    return writeToJSONFile('users.json', data);
   });
 }
 
 async function add_courses(id, ...courses) {
-  return readFromJSONFile('users.json').then(users => {
-    // if there is no user data
-    if (!users) { return Promise.reject("No user data available"); }
+  return readFromJSONFile('users.json').then(data => {
+    // if there is no course data
+    if (!data) { return Promise.reject("No active course data available"); }
 
-    // if the user is not found
-    if (!users[id]) { 
-      writeToJSONFile('users.json', users);
-      return Promise.reject("User ID not valid");
+    for (let {major, number, _} of courses) {
+      let course_id = major+':'+number;
+
+      // if the course is not found
+      if (!data[course_id]) { 
+        writeToJSONFile('users.json', data);
+        return Promise.reject("Course not found");
+      }
+  
+      data[course_id].push(id);
     }
 
-    users[id].courses = users[id].courses.concat(courses);
-    return writeToJSONFile('users.json', users);
-  });
+    return writeToJSONFile('users.json', data);
+  });  
 }
+
+let courses = [get_course('PHIL', "180"),
+get_course('COMPSCI', "515"),
+get_course('MATH', "411"),
+get_course('COMPSCI', "326"),
+get_course('COMPSCI', "426"),
+get_course('MUSIC', "150")];
+
+// init_courses(...courses).catch(err => console.log(err));
+add_courses("ihasaan", ...courses);
