@@ -52,3 +52,15 @@ async function add_courses(id, ...courses) {
     return writeToJSONFile('users.json', data);
   });  
 }
+
+async function check_for_open_courses() {
+  return readFromJSONFile('users.json').then(data => {
+    for (let course of Object.keys(data)) {
+      let [major, number] = course.split(':')
+
+      is_open(major, number).then(is_open => is_open ? console.log(`${major} ${number} is open`) : 0);
+    }
+  });  
+}
+
+store_open_courses().then(_ => check_for_open_courses()).catch(err => console.log(err));
