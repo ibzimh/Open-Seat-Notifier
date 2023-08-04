@@ -18,23 +18,6 @@ async function is_open(major, number) {
   return readFromJSONFile('data.json').then(majors => majors[major_id].some(course => course.number === number));
 }
 
-// function add_user(major, number, id) {
-//   let course_id = major+':'+number;
-//   return readFromJSONFile('users.json').then(data => {
-//     // if there is no course data
-//     if (!data) { return Promise.reject("No active course data available"); }
-
-//     // if the course is not found
-//     if (!data[course_id]) { 
-//       writeToJSONFile('users.json', data);
-//       return Promise.reject("Course not found");
-//     }
-
-//     data[course_id].push(id);
-//     return writeToJSONFile('users.json', data);
-//   });
-// }
-
 const get_course = (major, number) => ({major: major, number: number, id: []});
 
 async function init_courses(...courses) {
