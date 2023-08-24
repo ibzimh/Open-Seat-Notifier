@@ -67,19 +67,15 @@ async function isEmailPage(page) {
 async function enterEmail(page) {
     // try until the email page opens
     while(!isEmailPage(page)) {
-        console.log("trying again mate");
         try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 7"); }
     }
 
     await setCookies(page);
 
     let inputElement = await page.$("#i0116");
-    console.log(inputElement);
     let nextPageButton = await page.$("#idSIButton9");
-
-    console.log("verified");
+    
     await inputElement.type(EMAIL);
-    console.log("typing in the email");
     await nextPageButton.click();
 }
 
