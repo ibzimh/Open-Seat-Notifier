@@ -60,6 +60,7 @@ async function isEmailPage(elements) {
 }
 
 // enters email address for authentication
+// async enterEmail(page: Page): void
 async function enterEmail(page) {
     let elements = await page.$$('input');
     
@@ -86,6 +87,7 @@ async function enterEmail(page) {
 }
 
 // enters password for authentication
+// async enterPassword(page: Page): void
 async function enterPassword(page) {
     let elements = await page.$$('input');
 
@@ -95,6 +97,7 @@ async function enterPassword(page) {
 }
 
 // deals with the 'do you want to stay signed?' in page
+// async staySignedIn(page: Page): void
 async function staySignedIn(page) {
     let elements = await page.$$('input');
     await elements[5].click();
@@ -102,6 +105,7 @@ async function staySignedIn(page) {
 }
 
 // sets browser cookies to avoid 2FA
+// async setCookies(page: Page): void
 async function setCookies(page) {
     let cookies = await readFromJSONFile("cookies.json");
     for (let cookie of cookies) {
