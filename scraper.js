@@ -27,17 +27,19 @@ const runSpire = async () => {
 
     try { await staySignedIn(page); } catch { console.log("staying signed in not possible"); }
     try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 4"); }
-
+    
     console.log("i'm waiting here!");
-
-    try {
-        await page.goto("https://www.spire.umass.edu/psc/heproda_8/EMPLOYEE/SA/c/SSR_STUDENT_FL.SSR_MD_SP_FL.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START_PAGE_FL&scname=CS_SSR_MANAGE_CLASSES_NAV&AJAXTransfer=y", {
-            waitUntil: "domcontentloaded"
-        });
-    } catch {
-        console.log("problem in opening manage classes")
-    }
+    
+    try { await goToManageClasses(page); } catch { console.log("problem in opening manage classes"); }
+    try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 5"); }
+    
 };
+
+async function goToManageClasses(page) {
+    await page.goto("https://www.spire.umass.edu/psc/heproda_8/EMPLOYEE/SA/c/SSR_STUDENT_FL.SSR_MD_SP_FL.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START_PAGE_FL&scname=CS_SSR_MANAGE_CLASSES_NAV&AJAXTransfer=y", {
+        waitUntil: "domcontentloaded"
+    });
+}
 
 // opens the umass.edu spire log in page and presses log in
 async function logIntoSpire(page) {
