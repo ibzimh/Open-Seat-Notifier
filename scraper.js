@@ -71,30 +71,35 @@ async function enterEmail(page) {
 
     await setCookies(page);
 
-        if (id === 'i0116') {
     let inputElement = await page.$("#i0116");
     console.log(inputElement);
     let nextPageButton = await page.$("#idSIButton9");
 
     console.log("verified");
+    await inputElement.type(EMAIL);
+    console.log("typing in the email");
+    await nextPageButton.click();
 }
 
 // enters password for authentication
 // async enterPassword(page: Page): void
 async function enterPassword(page) {
-    let elements = await page.$$('input');
+    let inputElement = await page.$("#i0118");
+    let nextPageButton = await page.$("#idSIButton9");
 
-    await elements[9].type(PASSWORD);
+    await inputElement.type(PASSWORD);
     await page.waitForNetworkIdle();
-    await elements[10].click(); // go to the next page
+    await nextPageButton.click();
 }
 
 // deals with the 'do you want to stay signed?' in page
 // async staySignedIn(page: Page): void
 async function staySignedIn(page) {
-    let elements = await page.$$('input');
-    await elements[5].click();
-    await elements[7].click();
+    let checkBox = await page.$("#KmsiCheckboxField");
+    let nextPageButton = await page.$("#idSIButton9");
+    
+    await checkBox.click();
+    await nextPageButton.click();
 }
 
 // sets browser cookies to avoid 2FA
