@@ -53,9 +53,20 @@ async function logIntoSpire(page) {
     }
 }
 
+// TODO: checks if the page is the 'enter email' page
+// isEmailPage(elements: HTMLElement): boolean
+async function isEmailPage(elements) {
+    return await elements[0].getProperty('type').then(type => type.jsonValue()).then(type => type === 'email');
+}
+
 // enters email address for authentication
 async function enterEmail(page) {
     let elements = await page.$$('input');
+    
+    for (let elements = await page.$$('input'); !isEmailPage(elements); elements = await page.$$('input')) {
+        console.log("trying again mate");
+        try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 5"); }
+    }
 
     await setCookies(page);
 
