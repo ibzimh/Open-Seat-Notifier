@@ -55,36 +55,28 @@ async function logIntoSpire(page) {
 
 // checks if the page is the 'enter email' page
 // isEmailPage(elements: HTMLElement): boolean
-async function isEmailPage(elements) {
-    return await elements[0].getProperty('type').then(type => type.jsonValue()).then(type => type === 'email');
+async function isEmailPage(page) {
+    let input = await page.$("#i0116");
+    return await input.getProperty('type').then(type => type.jsonValue()).then(type => type === 'email');
 }
 
 // enters email address for authentication
 // async enterEmail(page: Page): void
 async function enterEmail(page) {
-    let elements = await page.$$('input');
-    
     // try until the email page opens
-    for (; !isEmailPage(elements); elements = await page.$$('input')) {
+    while(!isEmailPage(page)) {
         console.log("trying again mate");
-        try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 5"); }
+        try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 7"); }
     }
 
     await setCookies(page);
 
-    for (let e of elements) {
-        let id = await e.getProperty('id').then(id => id.jsonValue());
-
-        // if it is the type button
         if (id === 'i0116') {
-            await e.type(EMAIL);
-        }
+    let inputElement = await page.$("#i0116");
+    console.log(inputElement);
+    let nextPageButton = await page.$("#idSIButton9");
 
-        // go to the next page button
-        if (id === 'idSIButton9') {
-            await e.click();
-        }
-    }
+    console.log("verified");
 }
 
 // enters password for authentication
