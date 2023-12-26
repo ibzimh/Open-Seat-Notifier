@@ -29,20 +29,16 @@ const runSpire = async () => {
 
     try { await staySignedIn(page); } catch { console.log("staying signed in not possible"); }
     try { await page.waitForNavigation({ waitUntil: ['networkidle0'] }); } catch { console.log("waiting for network not possible 4"); }
-    
-    // try { await goToManageClasses(page); } catch { console.log("problem in opening manage classes"); }
-    // try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 5"); }
+
+    try { await openSceduleBuilder(page); } catch { console.log("problem in opening scedule builder"); }
+    try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 5"); }
     
     console.log("i'm waiting here!");
-    
-    // try { await openSceduleBuilder(page); } catch { console.log("problem in opening scedule builder"); }
-    // try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 6"); }
-
-    // javascript:LaunchURL(null,'https://www.spire.umass.edu/psc/heproda_newwin/EMPLOYEE/SA/c/CIVCS_FLUID_MENU.CIVCS_LAUNCH_FL.GBL?&pslnkid=UM_S202204121334032917264320',7,'',this.id);cancelBubble(event);
 };
 
-async function goToManageClasses(page) {
-    await page.goto("https://www.spire.umass.edu/psc/heproda_8/EMPLOYEE/SA/c/SSR_STUDENT_FL.SSR_MD_SP_FL.GBL?Action=U&MD=Y&GMenu=SSR_STUDENT_FL&GComp=SSR_START_PAGE_FL&GPage=SSR_START_PAGE_FL&scname=CS_SSR_MANAGE_CLASSES_NAV&AJAXTransfer=y", {
+async function openSceduleBuilder(page) {
+    const link = "https://www.spire.umass.edu/psc/heproda_8/EMPLOYEE/SA/c/CIVCS_FLUID_MENU.CIVCS_LAUNCH_FL.GBL";
+    await page.goto(link, {
         waitUntil: "domcontentloaded"
     });
 }
