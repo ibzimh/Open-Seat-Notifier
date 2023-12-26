@@ -15,24 +15,30 @@ const runSpire = async () => {
     })
 
     const page = await browser.newPage();
-
+    
     try { await logIntoSpire(page); } catch { console.log("problem with logging into spire"); }
-    try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 1"); }
-
+    try { await page.waitForNavigation({ waitUntil: ['networkidle0'] }); } catch { console.log("waiting for network not possible 1"); }
+    
     try { await enterEmail(page); } catch { console.log("email entering not possible"); }
     try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 2"); }
-
+    
     try { await enterPassword(page); } catch { console.log("password entering not possible"); }
-    try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 3"); }
+    try { await page.waitForNavigation(); } catch { console.log("waiting for network not possible 3"); }
+    
+    // writeCookies(page);
 
     try { await staySignedIn(page); } catch { console.log("staying signed in not possible"); }
-    try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 4"); }
+    try { await page.waitForNavigation({ waitUntil: ['networkidle0'] }); } catch { console.log("waiting for network not possible 4"); }
+    
+    // try { await goToManageClasses(page); } catch { console.log("problem in opening manage classes"); }
+    // try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 5"); }
     
     console.log("i'm waiting here!");
     
-    try { await goToManageClasses(page); } catch { console.log("problem in opening manage classes"); }
-    try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 5"); }
-    
+    // try { await openSceduleBuilder(page); } catch { console.log("problem in opening scedule builder"); }
+    // try { await page.waitForNetworkIdle(); } catch { console.log("waiting for network not possible 6"); }
+
+    // javascript:LaunchURL(null,'https://www.spire.umass.edu/psc/heproda_newwin/EMPLOYEE/SA/c/CIVCS_FLUID_MENU.CIVCS_LAUNCH_FL.GBL?&pslnkid=UM_S202204121334032917264320',7,'',this.id);cancelBubble(event);
 };
 
 async function goToManageClasses(page) {
@@ -59,7 +65,7 @@ async function logIntoSpire(page) {
 // isEmailPage(elements: HTMLElement): boolean
 async function isEmailPage(page) {
     let input = await page.$("#i0116");
-    return await input.getProperty('type').then(type => type.jsonValue()).then(type => type === 'email');
+    return input ? await input.getProperty('type').then(type => type.jsonValue()).then(type => type === 'email') : false;
 }
 
 // enters email address for authentication
@@ -86,7 +92,7 @@ async function enterPassword(page) {
     let nextPageButton = await page.$("#idSIButton9");
 
     await inputElement.type(PASSWORD);
-    await page.waitForNetworkIdle();
+    // await page.waitForNetworkIdle().catch(err => console.log(err));
     await nextPageButton.click();
 }
 
@@ -109,6 +115,7 @@ async function setCookies(page) {
     }
 }
 
+// async writeCookies(page: Page): void
 async function writeCookies(page) {
     await page.waitForNavigation({ waitUntil: "domcontentloaded" });
     console.log("i'm here 1");
